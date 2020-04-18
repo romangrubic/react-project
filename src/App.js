@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
+import Validation from './Validation/Validation';
+import Char from './Char/Char';
 
 class App extends Component {
     state = {
@@ -11,6 +13,7 @@ class App extends Component {
         ],
         otherState: 'some other value',
         showPersons: false,
+        userInput: '',
     };
 
     deletePersonHandler = (personIndex) => {
@@ -41,6 +44,15 @@ class App extends Component {
         this.setState({ showPersons: !doesShow });
     }
 
+    inputChangedHandler = (event) => {
+        this.setState({ userInput: event.target.value })
+    }
+    deleteCharHandler = (index) => {
+        const text = this.state.userInput.split('');
+        text.splice(index, 1);
+        const updatedText = text.join('')
+        this.setState({userInput: updatedText});
+    }
     render() {
         const style = {
             backgroundColor: 'white',
@@ -66,10 +78,23 @@ class App extends Component {
             )
         }
 
+        const charList = this.state.userInput.split('').map((ch, index) => {
+            return <Char 
+            character={ch} 
+            key={index}
+            clicked={() => this.deleteCharHandler(index)} />;
+        });
+
         return (
             <div className="App">
                 <h1>Hi, I'm a React App</h1>
                 <p>This is really working!</p>
+                <input type="text"
+                    onChange={ this.inputChangedHandler }
+                    value={ this.state.userInput } />
+                <p>{ this.state.userInput }</p>
+                <Validation inputLength={this.state.userInput.length}/>
+                { charList }
                 <button
                     style={ style }
                     onClick={ this.togglePersonsHandler }>Toggle persons</button>
