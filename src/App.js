@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
 import Person from './Person/Person';
-import Validation from './Validation/Validation';
-import Char from './Char/Char';
 
 class App extends Component {
     state = {
@@ -13,7 +11,6 @@ class App extends Component {
         ],
         otherState: 'some other value',
         showPersons: false,
-        userInput: '',
     };
 
     deletePersonHandler = (personIndex) => {
@@ -44,21 +41,14 @@ class App extends Component {
         this.setState({ showPersons: !doesShow });
     }
 
-    inputChangedHandler = (event) => {
-        this.setState({ userInput: event.target.value })
-    }
-    deleteCharHandler = (index) => {
-        const text = this.state.userInput.split('');
-        text.splice(index, 1);
-        const updatedText = text.join('')
-        this.setState({userInput: updatedText});
-    }
     render() {
         const style = {
-            backgroundColor: 'white',
+            backgroundColor: 'green',
+            color: 'white',
             font: 'inherit',
             border: '1px solid blue',
-            padding: '16px'
+            padding: '8px',
+            cursor: 'pointer',
         }
 
         let persons = null;
@@ -75,26 +65,23 @@ class App extends Component {
                             changed={ (event) => this.nameChangedHandler(event, person.id) } />
                     }) }
                 </div>
-            )
+            );
+            // setting styles dinamically
+            style.backgroundColor = 'red'
         }
-
-        const charList = this.state.userInput.split('').map((ch, index) => {
-            return <Char 
-            character={ch} 
-            key={index}
-            clicked={() => this.deleteCharHandler(index)} />;
-        });
+        // Dinamicly assigning classes 
+        const classes = [];
+        if (this.state.persons.length <=2){
+            classes.push('red'); // classes= ['red']
+        }
+        if (this.state.persons.length <= 1){
+            classes.push('bold'); // classes= ['red', 'bold']
+        }
 
         return (
             <div className="App">
                 <h1>Hi, I'm a React App</h1>
-                <p>This is really working!</p>
-                <input type="text"
-                    onChange={ this.inputChangedHandler }
-                    value={ this.state.userInput } />
-                <p>{ this.state.userInput }</p>
-                <Validation inputLength={this.state.userInput.length}/>
-                { charList }
+                <p className={classes.join(' ')}>This is really working!</p>
                 <button
                     style={ style }
                     onClick={ this.togglePersonsHandler }>Toggle persons</button>
