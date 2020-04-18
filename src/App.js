@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import classes from './App.css';
 import Person from './Person/Person';
 
 class App extends Component {
@@ -42,6 +42,8 @@ class App extends Component {
     }
 
     render() {
+
+        let btnClass = [classes.Button];
         let persons = null;
 
         if (this.state.showPersons) {
@@ -57,34 +59,28 @@ class App extends Component {
                     }) }
                 </div>
             );
-            // setting styles dinamically
-            // style.backgroundColor = 'red';
-            // style[':hover'] = {
-            //     backgroundColor: 'salmon',
-            //     color: 'black'
-            // };
+            btnClass.push(classes.Red);
         }
         // Dinamicly assigning classes 
-        const classes = [];
+        const assignedClasses = [];
         if (this.state.persons.length <= 2) {
-            classes.push('red'); // classes= ['red']
+            assignedClasses.push(classes.red); // classes= ['red']
         }
         if (this.state.persons.length <= 1) {
-            classes.push('bold'); // classes= ['red', 'bold']
+            assignedClasses.push(classes.bold); // classes= ['red', 'bold']
         }
 
         return (
-            <div className="App">
+            <div className={classes.App}>
                 <h1>Hi, I'm a React App</h1>
-                <p className={ classes.join(' ') }>This is really working!</p>
+                <p className={ assignedClasses.join(' ') }>This is really working!</p>
                 <button 
-                    className="button"
+                    className={btnClass.join(' ')}
                     onClick={ this.togglePersonsHandler }>Toggle persons
                 </button>
                 { persons }
             </div>
         );
-        // return React.createElement('div', {className: 'App'}, React.createElement('h1', null, 'Does this work now?'));
     }
 }
 
